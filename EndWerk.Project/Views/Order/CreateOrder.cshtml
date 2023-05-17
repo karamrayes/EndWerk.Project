@@ -1,0 +1,72 @@
+﻿@model Order.Project.Web.Models.OrderDetailsModel
+
+<!-- Existing code -->
+
+<h4>OrderDetails List</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateOrder">
+            <!-- Existing code -->
+            @*<div class="form-group">
+            <label asp-for="orderDetails.ProductId" class="control-label"></label>
+            <select asp-for="orderDetails.ProductId" class="form-control" asp-items="ViewBag.ProductIdList"></select>
+            </div>*@
+            <div id="orderDetailsContainer">
+                @for (int i = 0; i < Model.OrderDetailsList.Count; i++)
+                {
+                    <div class="form-group">
+                        <label asp-for="OrderDetailsList[i].ProductId" class="control-label"></label>
+                        <select asp-for="OrderDetailsList[i].ProductId" class="form-control" asp-items="ViewBag.ProductIdList"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OrderDetailsList[i].Quantity" class="control-label"></label>
+                        <input asp-for="OrderDetailsList[i].Quantity" class="form-control" />
+                        <span asp-validation-for="OrderDetailsList[i].Quantity" class="text-danger"></span>
+                    </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <button id="addOrderDetailsButton" type="button" class="btn btn-primary">Add Order Details</button>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" @*value="Create"*@ class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var productIdList = @Html.Raw(Json.Serialize(ViewBag.ProductIdList));
+
+        document.getElementById('addOrderDetailsButton').addEventListener('click', function () {
+            var container = document.getElementById('orderDetailsContainer');
+
+            var index = container.childElementCount / 2;
+            var prefix = 'OrderDetailsList[' + index + ']';
+
+            var orderDetailsHtml = `
+                        <div class="form-group">
+                            <label class="control-label">Product ID:</label>
+                            <select class="form-control" name="${prefix}.ProductId">
+                                <option value="">-- Select Product --</option>
+        @foreach (var product in ViewBag.ProductIdList)
+        {
+                                        <option value="@product.Value">@product.Text</option>
+        }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Quantity:</label>
+                            <input class="form-control" type="number" name="${prefix}.Quantity" />
+                            <span class="text-danger" asp-validation-for="${prefix}.Quantity"></span>
+                        </div>
+                    `;
+
+            container.insertAdjacentHTML('beforeend', orderDetailsHtml);
+        });
+    </script>
+}

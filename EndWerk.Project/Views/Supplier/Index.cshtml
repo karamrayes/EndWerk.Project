@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Order.Object.Supplier>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">@ViewBag.Message</div>
+}
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SupplierName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SupplierAdress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SupplierEmail)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierAdress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierEmail)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SupplierId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SupplierId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SupplierId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

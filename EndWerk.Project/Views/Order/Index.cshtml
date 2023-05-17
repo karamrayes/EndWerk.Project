@@ -1,0 +1,110 @@
+﻿@model IEnumerable<Order.Object.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">@ViewBag.Message</div>
+}
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Shipped)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentRecevied)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDetails.Product.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDetails.Product.ProductId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDetails.Product.ProductPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDetails.Product.ProductCategory.ProductCategoryName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Shipped)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentRecevied)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDetails.Product.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDetails.Product.ProductId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDetails.Product.ProductPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDetails.Product.ProductCategory.ProductCategoryName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.OrderId  }) |
+                @Html.ActionLink("Details", "Details", new {  id=item.OrderId  }) |
+                @Html.ActionLink("Delete", "Delete", new {  id=item.OrderId  })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
