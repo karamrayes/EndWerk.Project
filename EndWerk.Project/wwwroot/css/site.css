@@ -18,7 +18,11 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-size: 18px;
+    background-image: url('/BackGround/2533-1.jpg'); /* Replace with the path to your background image */
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 footer {
