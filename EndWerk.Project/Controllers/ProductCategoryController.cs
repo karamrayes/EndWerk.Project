@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Order.Object;
 using Order.Services;
 
@@ -12,6 +13,8 @@ namespace Order.Project.Web.Controllers
         {
             _productCategoryService = productCategoryService;
         }
+
+        [Authorize]
         public IActionResult Index()
         {
             var suppliers = _productCategoryService.GetProductCatagoryList();
@@ -25,6 +28,7 @@ namespace Order.Project.Web.Controllers
             return View(suppliers);
         }
 
+        [Authorize]
         public IActionResult Details(int id)
         {
             var user = _productCategoryService.GetProductCatagory(id);
@@ -36,6 +40,7 @@ namespace Order.Project.Web.Controllers
             return View(user);
         }
 
+        [Authorize]
         public IActionResult Edit(int id)
         {
             var user = _productCategoryService.GetProductCatagory(id);
@@ -43,6 +48,7 @@ namespace Order.Project.Web.Controllers
             return View(user);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Edit(int id, ProductCategory user)
         {
@@ -55,11 +61,13 @@ namespace Order.Project.Web.Controllers
             return RedirectToAction("Details", new { id = userToEdit.ProductCategoryId });
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create(ProductCategory user)
         {
@@ -70,6 +78,7 @@ namespace Order.Project.Web.Controllers
         }
 
 
+        [Authorize]
         public IActionResult Delete(int id)
         {
             var UserToDelte = _productCategoryService.GetProductCatagory(id);
@@ -77,6 +86,7 @@ namespace Order.Project.Web.Controllers
             return View(UserToDelte);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Delete(int id, Supplier user)
         {

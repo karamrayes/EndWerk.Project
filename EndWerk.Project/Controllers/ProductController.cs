@@ -1,4 +1,5 @@
 ﻿using EndWerk.Project.Data;
+using Microsoft.AspNetCore.Authorization;
 //using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -45,6 +46,7 @@ namespace Order.Project.Web.Controllers
             return View(product);
         }
 
+        [Authorize]
         public IActionResult Edit(int id) 
         {
             ViewData["supplierId"] = new SelectList(_SupplierService.GetSuppliers(), "SupplierId", "SupplierId");
@@ -60,6 +62,7 @@ namespace Order.Project.Web.Controllers
             return View(product);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Edit(int id ,Product product)
         {
@@ -84,6 +87,7 @@ namespace Order.Project.Web.Controllers
             
         }
 
+        [Authorize]
         public IActionResult Create() 
         {
             //var x = _SupplierService.GetSuppliers();
@@ -97,6 +101,7 @@ namespace Order.Project.Web.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create(Product product)
         {
@@ -117,6 +122,7 @@ namespace Order.Project.Web.Controllers
             }           
         }
 
+        [Authorize]
         public IActionResult Delete(int id) 
         {
            var product=  _productService.GetProduct(id);
@@ -124,6 +130,7 @@ namespace Order.Project.Web.Controllers
             return View(product);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Delete(int id , Product product)
         {

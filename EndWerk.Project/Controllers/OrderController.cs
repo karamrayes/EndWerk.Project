@@ -1,4 +1,5 @@
 ﻿//using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,6 +26,8 @@ namespace Order.Project.Web.Controllers
             _productService = productService;
             _OrderDetailsService = orderDetailsService;
         }
+
+        [Authorize]
         public IActionResult Index()
         {
 
@@ -56,6 +59,7 @@ namespace Order.Project.Web.Controllers
             return View(list);
         }
 
+        [Authorize]
         public IActionResult Details(int id) 
         {
             var Order = _orderService.GetOrder(id);
@@ -66,6 +70,7 @@ namespace Order.Project.Web.Controllers
             return View(Order);
         }
 
+        [Authorize]
         public IActionResult Edit(int id) 
         {
             var order = _orderService.GetOrder(id);
@@ -78,6 +83,7 @@ namespace Order.Project.Web.Controllers
             return View(order);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Edit(int id , Order.Object.Order order)
         {
@@ -100,6 +106,7 @@ namespace Order.Project.Web.Controllers
             
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             //var currentUserId = User.Identity.GetUserId();
@@ -122,6 +129,7 @@ namespace Order.Project.Web.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create(Order.Object.Order order)
         {
@@ -151,7 +159,7 @@ namespace Order.Project.Web.Controllers
         }
 
 
-
+        [Authorize]
         public IActionResult Delete(int id) 
         {
             var ordertodelete = _orderService.GetOrder(id);
@@ -160,6 +168,7 @@ namespace Order.Project.Web.Controllers
         }
 
 
+        [Authorize]
         [HttpPost]
         public IActionResult Delete(int id , Order.Object.Order order) 
         {
@@ -178,6 +187,7 @@ namespace Order.Project.Web.Controllers
             }
         }
 
+        [Authorize]
         public IActionResult CreateOrder() 
         {
             OrderDetailsModel model = new OrderDetailsModel();
@@ -197,6 +207,7 @@ namespace Order.Project.Web.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult CreateOrder(OrderDetailsModel model, int id)
         {

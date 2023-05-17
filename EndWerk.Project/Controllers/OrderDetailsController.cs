@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Order.Object;
 using Order.Services;
 
@@ -13,6 +14,7 @@ namespace Order.Project.Web.Controllers
             _OrderDetailsService = orderDetailsService;
         }
 
+        [Authorize]
         public IActionResult Index() 
         {
             var x = _OrderDetailsService.GetOrderDetails();
@@ -20,11 +22,13 @@ namespace Order.Project.Web.Controllers
            return View(x);
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create(OrderDetail user)
         {
