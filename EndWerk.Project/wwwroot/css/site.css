@@ -19,10 +19,13 @@ html {
 
 body {
     margin-bottom: 60px;
-    font-size: 18px;
-    background-image: url('/BackGround/2533-1.jpg'); /* Replace with the path to your background image */
+    /*font-size: 19px;*/
+    /*background-color: #258cfb;*/ /* Replace with your desired dark background color */
+    /*color: white;*/ /* Replace with your desired text color */
+    background-image: url('/BackGround/CompanyGif.gif'); /* Replace with the path to your background image */
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain; /* Adjust the value to "cover", "contain", or specific dimensions */
+    background-position: center; /* Adjust the position if needed */
 }
 
 footer {
