@@ -99,11 +99,11 @@ namespace Order.Services
                 foreach (var orderDetails in OrderDetailsList)
                 {
                     orderDetails.OrderId = NewOrder.OrderId;
-                    _orderDetailsService.UpdateOrCreateOrderDetails(orderDetails);
+                    //_orderDetailsService.UpdateOrCreateOrderDetails(orderDetails);
                 }
-                //_repository.OrderDetails.AddRange(OrderDetailsList);
+                _repository.OrderDetails.AddRange(OrderDetailsList);
 
-                //_repository.SaveChanges();
+                _repository.SaveChanges();
 
             }
 
