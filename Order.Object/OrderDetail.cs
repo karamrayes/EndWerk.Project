@@ -17,17 +17,19 @@ namespace Order.Object
         [Column("OrderDetailId")]
         public int OrderDetailId { get; set; }
 
-        [ForeignKey("Product")]
+        
         [Column("ProductId")]       
         public int ProductId { get; set; }
-       
+
+        [ForeignKey("ProductId")]
         public Product? Product { get; set; }
 
 
-        [ForeignKey("Order")]
+        
         [Column("OrderId")]        
         public int OrderId { get; set; }
-       
+
+        [ForeignKey("OrderId")]
         public Order? Order { get; set; }
 
 
