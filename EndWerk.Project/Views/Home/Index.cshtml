@@ -1,8 +1,58 @@
-﻿@{
+﻿@model IEnumerable<Order.Object.Message>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome To The Company Page</h1>   
 </div>
+
+@if (User.Identity.IsAuthenticated &&
+   ViewContext.RouteData.Values["controller"]?.ToString() == "Home" &&
+   ViewContext.RouteData.Values["action"]?.ToString() == "Index")
+{
+    <div class="message-list">
+        <h3 class="message-heading">Messages</h3>
+
+        <div class="message-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Content)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Type)
+                        </th>
+                        @*<th>
+                            @Html.DisplayNameFor(model => model.User)
+                        </th>*@
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Content)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            @*<td>
+                                @Html.DisplayFor(modelItem => item.User.Name)
+                            </td>*@
+                            <td>
+                                @*<a asp-action="Edit" asp-route-id="@item.BerichtId">Edit</a> |*@
+                                <a asp-controller="Message" asp-action="Details" asp-route-id="@item.BerichtId">Details</a>
+                                @*<a asp-action="Delete" asp-route-id="@item.BerichtId">Delete</a>*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+}

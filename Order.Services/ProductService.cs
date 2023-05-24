@@ -73,5 +73,18 @@ namespace Order.Services
         {
             _repository.SaveChanges();
         }
+
+        public void UpdateProductUnitInstock(List<OrderDetail> OrderDetailsList)
+        {
+            
+                foreach (var item in OrderDetailsList)
+                {
+                    GetProduct(item.ProductId).UnitInStock -= item.Quantity;
+                }
+
+                _repository.SaveChanges();
+           
+        }
+
     }
 }

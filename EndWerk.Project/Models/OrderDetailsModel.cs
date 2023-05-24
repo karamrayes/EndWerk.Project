@@ -8,5 +8,7 @@ namespace Order.Project.Web.Models
 
         public List<OrderDetail> OrderDetailsList { get; set; }
 
+        public Order.Object.Order Order { get; set; }
+
     }
 }

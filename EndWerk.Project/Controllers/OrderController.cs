@@ -19,7 +19,7 @@ namespace Order.Project.Web.Controllers
         private OrderDetailsService _OrderDetailsService { get; set; }
         private ProductService _productService { get; set; }
 
-        public OrderController(OrderService orderService, ProductService productService, OrderDetailsService orderDetailsService,Microsoft.AspNetCore.Identity.UserManager<User> userManager)
+        public OrderController(OrderService orderService, ProductService productService, OrderDetailsService orderDetailsService, Microsoft.AspNetCore.Identity.UserManager<User> userManager)
         {
             _orderService = orderService;
             _userManager = userManager;
@@ -33,11 +33,11 @@ namespace Order.Project.Web.Controllers
 
             //var currentUserId = User.Identity.GetUserId();
             //var currentUser = _userManager.GetUserAsync;
-            
+
             //var listoforderdetails = _OrderDetailsService.GetOrderDetails();
 
             var list = _orderService.GetOrders();
-            
+
             //var UserModel = list.Select(Order => new OrderModel
             //{
             //    OrderId = Order.OrderId,
@@ -60,7 +60,7 @@ namespace Order.Project.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult Details(int id) 
+        public IActionResult Details(int id)
         {
             var Order = _orderService.GetOrder(id);
             if (TempData.ContainsKey("message"))
@@ -71,7 +71,7 @@ namespace Order.Project.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult Edit(int id) 
+        public IActionResult Edit(int id)
         {
             var order = _orderService.GetOrder(id);
 
@@ -79,15 +79,15 @@ namespace Order.Project.Web.Controllers
             {
                 ViewBag.Message = TempData["Message"].ToString();
             }
-             
+
             return View(order);
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(int id , Order.Object.Order order)
+        public IActionResult Edit(int id, Order.Object.Order order)
         {
-            
+
 
             var orderToEdit = _orderService.GetOrder(id);
             TryUpdateModelAsync(orderToEdit);
@@ -103,7 +103,7 @@ namespace Order.Project.Web.Controllers
                 TempData["message"] = "Error Couldnt Update";
                 return RedirectToAction("Edit", new { id = id });
             }
-            
+
         }
 
         [Authorize]
@@ -155,12 +155,12 @@ namespace Order.Project.Web.Controllers
                 TempData["message"] = "Error Couldnt Create";
                 return RedirectToAction("Create");
             }
-                       
+
         }
 
 
         [Authorize]
-        public IActionResult Delete(int id) 
+        public IActionResult Delete(int id)
         {
             var ordertodelete = _orderService.GetOrder(id);
 
@@ -170,7 +170,7 @@ namespace Order.Project.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Delete(int id , Order.Object.Order order) 
+        public IActionResult Delete(int id, Order.Object.Order order)
         {
             var Result = _orderService.DeleteOrder(id);
             if (Result)
@@ -188,7 +188,7 @@ namespace Order.Project.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult CreateOrder() 
+        public IActionResult CreateOrder()
         {
             OrderDetailsModel model = new OrderDetailsModel();
             model.OrderDetailsList = new List<OrderDetail>();
@@ -209,73 +209,39 @@ namespace Order.Project.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult CreateOrder(OrderDetailsModel model, int id)
+        public IActionResult CreateOrder(OrderDetailsModel model, int id, string submitButton)
         {
             var currentUserId = _userManager.GetUserId(User);
 
-            //if (currentUserId != null)
-            //{
-            //    ViewData["UserId"] = currentUserId;
-            //}
-            //else
-            //{
-            //    ViewData["UserId"] = "";
-            //}
-
-            //ViewData["ProductId"] = new SelectList(_productService.GetProducts(), "ProductId", "ProductId", orderDetails.ProductId);
-
-            
             var products = _productService.GetProducts().Select(p => new
             {
                 Id = p.ProductId,
                 DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} -Name: {p.ProductName}"
             });
 
-            //ViewData["ProductId"] = new SelectList(products, "Id", "DisplayText",orderDetails.ProductId);
             ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
-            //productslist.Add(x);
 
-            //orderDetails.UnitPrice = _productService.GetProduct(orderDetails.ProductId).ProductPrice;
+            // Validate and process the order
 
-            //ViewData["UnitPrice"] = UnitPrice;
-
-            
-            decimal orderamount = 0;
+            // Calculate the total amount
+            decimal totalAmount = 0;
             foreach (var item in model.OrderDetailsList)
             {
                 item.UnitPrice = _productService.GetProduct(item.ProductId).ProductPrice;
 
-                orderamount += item.UnitPrice * item.Quantity ;
-
+                totalAmount += item.Quantity * item.UnitPrice;
             }
             
-            
 
-            Order.Object.Order newOrder = new Order.Object.Order
-            {
-                OrderAmount = orderamount,               
-                OrderDate = DateTime.Now,
-                PaymentRecevied = true,
-                Shipped = true,
-                ShipDate = DateTime.Now,
-                UserId = currentUserId,
+            // Assign the total amount to the Order.Amount property
+            model.Order.OrderAmount = totalAmount;
+            model.Order.OrderDate = DateTime.Now;
+            model.Order.UserId = currentUserId;
+            model.Order.Shipped = false;
 
-            };
+            _orderService.MakeOrder(model.Order, model.OrderDetailsList);
 
-            if (newOrder != null)
-            {
-                foreach (var item in model.OrderDetailsList)
-                {
-                    _productService.GetProduct(item.ProductId).UnitInStock -= item.Quantity;
-                }
-                
-                _productService.UpdateReposistory();
-                
-            }
-            
-            _orderService.MakeOrder(newOrder, model.OrderDetailsList);
-
-            return RedirectToAction("Details" , new {id = newOrder.OrderId});
+            return RedirectToAction("Details", new { id = model.Order.OrderId });
         }
     }
 }

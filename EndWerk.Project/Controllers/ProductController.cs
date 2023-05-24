@@ -67,7 +67,7 @@ namespace Order.Project.Web.Controllers
         public IActionResult Edit(int id ,Product product)
         {
 
-            ViewData["supplierId"] = new SelectList(_SupplierService.GetSuppliers(), "SupplierId", "Id", product.supplierId);
+            ViewData["supplierId"] = new SelectList(_SupplierService.GetSuppliers(), "SupplierId", "SupplierId", product.supplierId);
             ViewData["ProductCategoryId"] = new SelectList(_ProductCategoryService.GetProductCatagoryList(), "ProductCategoryId", "ProductCategoryId", product.ProductCategory);
 
             var ProductToEdit = _productService.GetProduct(id);

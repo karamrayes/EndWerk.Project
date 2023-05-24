@@ -13,6 +13,7 @@ builder.Services.AddTransient<ProductService>();
 builder.Services.AddTransient<SupplierService>();
 builder.Services.AddTransient<ProductCategoryService>();
 builder.Services.AddTransient<OrderDetailsService>();
+builder.Services.AddTransient<MessageServices>();
 
 
 // Add services to the container.

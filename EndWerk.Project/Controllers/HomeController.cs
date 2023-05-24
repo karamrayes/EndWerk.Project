@@ -1,5 +1,8 @@
 ﻿using EndWerk.Project.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using Order.Object;
+using Order.Services;
 using System.Diagnostics;
 
 namespace EndWerk.Project.Controllers
@@ -8,18 +11,28 @@ namespace EndWerk.Project.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private MessageServices _messageServices { get; set; }
+
+        public HomeController(ILogger<HomeController> logger , MessageServices messageServices)
         {
             _logger = logger;
+            _messageServices = messageServices;
         }
 
         public IActionResult Index()
         {
-            return View();
+            
+                // Retrieve the list of messages from your data source
+                List<Order.Object.Message> messages = _messageServices.GetMessages();
+
+                // Pass the list of messages to the view using ViewBag or ViewData
+                //ViewBag.Messages = messages;
+            
+            return View(messages);
         }
 
         public IActionResult Privacy()
-        {
+        {           
             return View();
         }
 

@@ -18,17 +18,20 @@ namespace Order.Services
 
         private Repository _repository;
         private OrderDetailsService _orderDetailsService;
+        private ProductService _procutService;
 
-        public OrderService(Repository repository, OrderDetailsService orderDetailsService)
+
+        public OrderService(Repository repository, OrderDetailsService orderDetailsService, ProductService procutService)
         {
             _repository = repository;
             _orderDetailsService = orderDetailsService;
+            _procutService = procutService;
         }
 
         public List<Order.Object.Order> GetOrders() 
         {
             //return _repository.Order.ToList();
-            return _repository.Orders.Include(u => u.User).Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.ProductCategory)
+            return _repository.Orders.Include(u => u.User).Include(o => o.OrderDetail).ThenInclude(od => od.Product).ThenInclude(p => p.ProductCategory)
                          .ToList();
 
         }
@@ -36,7 +39,7 @@ namespace Order.Services
         public Order.Object.Order GetOrder(int id)
         {
             //return _repository.Order.FirstOrDefault(o => o.OrderId == id);
-            return _repository.Orders.Include(u => u.User).Include(o => o.OrderDetails)
+            return _repository.Orders.Include(u => u.User).Include(o => o.OrderDetail)
                          .ThenInclude(od => od.Product).FirstOrDefault(o => o.OrderId == id) ??new Object.Order();
                         
         }
@@ -91,19 +94,21 @@ namespace Order.Services
             
             var Result = UpdateOrCreateOrder(NewOrder);
 
-
+            
+            
 
             if (Result != null)
             {
+                _procutService.UpdateProductUnitInstock(OrderDetailsList);
 
                 foreach (var orderDetails in OrderDetailsList)
                 {
                     orderDetails.OrderId = NewOrder.OrderId;
-                    //_orderDetailsService.UpdateOrCreateOrderDetails(orderDetails);
+                    _orderDetailsService.UpdateOrCreateOrderDetails(orderDetails);
                 }
-                _repository.OrderDetails.AddRange(OrderDetailsList);
+                //_repository.OrderDetails.AddRange(OrderDetailsList);
 
-                _repository.SaveChanges();
+                //_repository.SaveChanges();
 
             }
 

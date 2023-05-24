@@ -18,11 +18,8 @@ html {
 }
 
 body {
-    margin-bottom: 60px;
-    /*font-size: 19px;*/
-    /*background-color: #258cfb;*/ /* Replace with your desired dark background color */
-    /*color: white;*/ /* Replace with your desired text color */
-    background-image: url('/BackGround/CompanyGif.gif'); /* Replace with the path to your background image */
+    margin-bottom: 60px;    
+    background-image: url('/BackGround/animated-interactive-infographics-header-wide.gif'); /* Replace with the path to your background image */
     background-repeat: no-repeat;
     background-size: contain; /* Adjust the value to "cover", "contain", or specific dimensions */
     background-position: center; /* Adjust the position if needed */
@@ -33,3 +30,31 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+.message-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.message-heading {
+    font-size: 20px;
+    color: #000000;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.message-container {
+    background-color: #ffffff;
+    border: 1px solid #258cfb;
+    padding: 10px;
+    max-width: 400px;
+    height: 300px;
+    overflow: auto;
+    border-radius: 10px;
+}
+
+
