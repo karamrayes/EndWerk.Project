@@ -25,7 +25,7 @@ namespace Order.Project.Web.AmdinHelper
                 City = "Testcity",
                 //PostalCode = "9000",
                 Country = "BE",
-                //DateOfBirth = new DateTime(1985, 10, 5),
+                DateBirth = new DateTime(1997, 01, 01),
                 Name = "admin",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true

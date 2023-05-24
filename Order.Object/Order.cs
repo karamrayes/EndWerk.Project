@@ -31,7 +31,7 @@ namespace Order.Object
 
         public User User { get; set; }
 
-        public OrderDetail OrderDetail { get; set; } //help table
+        public List<OrderDetail> OrderDetail { get; set; } //help table
 
         //public Product Product { get; set; }
 

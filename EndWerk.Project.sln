@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Order.Object", "Order.Objec
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order.Project.BL", "Order.Project.BL", "{96D35AA1-6BE7-4C62-8619-7B3FE91BCE0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndWerk.API", "EndWerk.API\EndWerk.API.csproj", "{F49E023C-F960-47FC-8BFE-A94F2017FE9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{43A3C3B3-5F84-4A8F-9547-6AD0C9EF3918}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43A3C3B3-5F84-4A8F-9547-6AD0C9EF3918}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43A3C3B3-5F84-4A8F-9547-6AD0C9EF3918}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F49E023C-F960-47FC-8BFE-A94F2017FE9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F49E023C-F960-47FC-8BFE-A94F2017FE9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F49E023C-F960-47FC-8BFE-A94F2017FE9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F49E023C-F960-47FC-8BFE-A94F2017FE9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

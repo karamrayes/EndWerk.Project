@@ -60,6 +60,38 @@ namespace Order.Project.Web.Controllers
         }
 
         [Authorize]
+        public IActionResult Index2()
+        {
+
+            //var currentUserId = User.Identity.GetUserId();
+            //var currentUser = _userManager.GetUserAsync;
+
+            //var listoforderdetails = _OrderDetailsService.GetOrderDetails();
+
+            var list = _orderService.GetOrders();
+
+            //var UserModel = list.Select(Order => new OrderModel
+            //{
+            //    OrderId = Order.OrderId,
+            //    OrderAmount = Order.OrderAmount,
+            //    OrderDate = Order.OrderDate,
+            //    ShipDate = Order.ShipDate,
+            //    Shipped = Order.Shipped,
+            //    PaymentRecevied = Order.PaymentRecevied,
+            //    UserId = Order.UserId,
+            //    User = Order.User,
+            //    OrderDetails = Order.OrderDetails
+            //    //Idmodel == user.Id
+            //}).ToList();
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["Message"].ToString();
+            }
+
+            return View(list);
+        }
+
+        [Authorize]
         public IActionResult Details(int id)
         {
             var Order = _orderService.GetOrder(id);
