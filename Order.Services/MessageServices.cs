@@ -26,7 +26,7 @@ namespace Order.Services
 
         public Message GetMessage(int id)
         {
-            return _repository.Messages.Include(m => m.User).FirstOrDefault(c => c.BerichtId == id);
+            return _repository.Messages.Include(m => m.User).FirstOrDefault(c => c.MessageId == id);
 
         }
 
@@ -35,7 +35,7 @@ namespace Order.Services
         {
             try
             {
-                if (message.BerichtId == 0)
+                if (message.MessageId == 0)
                 {
                     _repository.Messages.Add(message);
                 }

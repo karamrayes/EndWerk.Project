@@ -40,7 +40,7 @@ namespace Order.Object
 
         public ProductCategory ProductCategory { get; set; }
 
-        public OrderDetail OrderDetails { get; set; }
+        public List<OrderDetail> OrderDetails { get; set; }
 
     }
 }

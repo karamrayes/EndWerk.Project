@@ -55,7 +55,7 @@ namespace Order.Project.Web.Controllers
             _messageServices.UpdataOrCreateMessage(MessageToEdit);
             TempData["message"] = "Object has been updated successfully.";
 
-            return RedirectToAction("Details", new { id = MessageToEdit.BerichtId });
+            return RedirectToAction("Details", new { id = MessageToEdit.MessageId });
         }
 
         public IActionResult Create()
@@ -88,7 +88,7 @@ namespace Order.Project.Web.Controllers
             _messageServices.UpdataOrCreateMessage(message);
             TempData["message"] = "Object has been Created successfully.";
 
-            return RedirectToAction("Details", new { id = message.BerichtId });
+            return RedirectToAction("Details", new { id = message.MessageId });
         }
 
 

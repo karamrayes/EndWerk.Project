@@ -195,7 +195,7 @@ namespace Order.DataAccess.Migrations
                 name: "Message",
                 columns: table => new
                 {
-                    BerichtId = table.Column<int>(type: "int", nullable: false)
+                    MessageId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -203,7 +203,7 @@ namespace Order.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Message", x => x.BerichtId);
+                    table.PrimaryKey("PK_Message", x => x.MessageId);
                     table.ForeignKey(
                         name: "FK_Message_AspNetUsers_UserId",
                         column: x => x.UserId,

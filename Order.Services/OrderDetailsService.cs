@@ -37,7 +37,7 @@ namespace Order.Services
                 {
                     // Insert new OrderDetails record
                     //_repository.OrderDetails.Add(orderdetails);
-                    _repository.OrderDetails.AddAsync(orderdetails);
+                    _repository.OrderDetails.Add(orderdetails);
                 }
                 else
                 {

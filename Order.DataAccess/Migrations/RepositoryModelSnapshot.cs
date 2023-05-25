@@ -157,12 +157,12 @@ namespace Order.DataAccess.Migrations
 
             modelBuilder.Entity("Order.Object.Message", b =>
                 {
-                    b.Property<int>("BerichtId")
+                    b.Property<int>("MessageId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("BerichtId");
+                        .HasColumnName("MessageId");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BerichtId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"));
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -179,7 +179,7 @@ namespace Order.DataAccess.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("UserId");
 
-                    b.HasKey("BerichtId");
+                    b.HasKey("MessageId");
 
                     b.HasIndex("UserId");
 
@@ -517,13 +517,13 @@ namespace Order.DataAccess.Migrations
             modelBuilder.Entity("Order.Object.OrderDetail", b =>
                 {
                     b.HasOne("Order.Object.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderDetail")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Order.Object.Product", "Product")
-                        .WithMany()
+                        .WithMany("OrderDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -550,6 +550,16 @@ namespace Order.DataAccess.Migrations
                     b.Navigation("ProductCategory");
 
                     b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("Order.Object.Order", b =>
+                {
+                    b.Navigation("OrderDetail");
+                });
+
+            modelBuilder.Entity("Order.Object.Product", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

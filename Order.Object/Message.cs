@@ -12,8 +12,8 @@ namespace Order.Object
     public class Message
     {
         [Key]
-        [Column("BerichtId")]
-        public int BerichtId { get; set; }
+        [Column("MessageId")]
+        public int MessageId { get; set; }
 
         [Column("Content")]
         public string Content { get; set; }

@@ -22,15 +22,15 @@ namespace Order.Object
         public int ProductId { get; set; }
 
         [ForeignKey("ProductId")]
-        public Product? Product { get; set; }
+        public Product Product { get; set; }
 
 
-        
+        [ForeignKey("Order")]
         [Column("OrderId")]        
         public int OrderId { get; set; }
 
-        [ForeignKey("OrderId")]
-        public Order? Order { get; set; }
+        
+        public Order Order { get; set; }
 
 
 
