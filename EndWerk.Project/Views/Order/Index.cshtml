@@ -33,18 +33,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.PaymentRecevied)
             </th>
-            <th>
+           @* <th>
                 @Html.DisplayNameFor(model => model.UserId)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.User.Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.User.Email)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.OrderDetail)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -70,21 +70,21 @@
                 <td>
                     @Html.DisplayFor(modelItem => order.PaymentRecevied)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => order.UserId)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => order.User.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => order.User.Email)
                 </td>
-                <td>
+                @*<td>
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>Product Name</th>
-                                @*<th>Product Id</th>*@
+                                <th>Product Id</th>
                                 <th>Product Price</th>
                                 <th>Product Quantity</th>
                             </tr>
@@ -94,15 +94,15 @@
                             {
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => orderDetail.Product.ProductName)</td>
-                                    @*<td>@Html.DisplayFor(modelItem => orderDetail.Product.ProductId)</td>*@
+                                    <td>@Html.DisplayFor(modelItem => orderDetail.Product.ProductId)</td>
                                     <td>@Html.DisplayFor(modelItem => orderDetail.UnitPrice)</td>
                                      <td>@Html.DisplayFor(modelItem => orderDetail.Quantity)</td>
-                                    @*<td>@Html.DisplayFor(modelItem => orderDetail.Product.ProductCategory.ProductCategoryName)</td>*@
+                                    <td>@Html.DisplayFor(modelItem => orderDetail.Product.ProductCategory.ProductCategoryName)</td>
                                 </tr>
                             }
                         </tbody>
                     </table>
-                </td>
+                </td>*@
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = order.OrderId }) |
                     @Html.ActionLink("Details", "Details", new { id = order.OrderId }) |
@@ -111,13 +111,3 @@
             </tr>
         }
 </table>
-
-<style>
-    body {
-        margin-bottom: 60px;
-        background-image: url('/BackGround/gif13.gif');
-        /*background-repeat: no-repeat;*/
-        background-size: 85%; /* Adjust the percentage to control the size */
-        background-position: center center; /* Center the background horizontally and vertically */
-    }
-</style>

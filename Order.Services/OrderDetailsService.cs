@@ -21,7 +21,7 @@ namespace Order.Services
         public List<OrderDetail> GetOrderDetails()
         {
             //return _repository.Order.ToList();
-            return _repository.OrderDetails.Include(u => u.Product).ThenInclude(pc => pc.ProductCategory)
+            return _repository.OrderDetails.Include(o => o.Order).Include(u => u.Product).ThenInclude(pc => pc.ProductCategory)
                          .ToList();
 
         }
