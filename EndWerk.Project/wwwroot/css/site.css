@@ -1,10 +1,10 @@
 html {
-  font-size: 20px;
+  font-size: 14px;
 }
 
 @media (min-width: 768px) {
   html {
-    font-size: 22px;
+    font-size: 16px;
   }
 }
 
@@ -24,12 +24,12 @@ footer {
 }
 
 body {
-    margin-bottom: 60px;
-    background-image: url('/BackGround/gif7.gif');
-    /*background-image: url('/BackGround/Gif5.gif');*/
-    /*background-repeat: no-repeat;*/
-    background-size: 50%; /* Adjust the percentage to control the size */
-    background-position: center center; /* Center the background horizontally and vertically */
+    /*margin-bottom: 60px;
+    background-image: url('/BackGround/gif14.gif');
+    background-image: url('/BackGround/Gif5.gif');
+    background-repeat: no-repeat;
+    background-size: 50%;  Adjust the percentage to control the size 
+    background-position: center center;  Center the background horizontally and vertically */
 }
 
 
