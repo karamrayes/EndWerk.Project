@@ -25,12 +25,12 @@ footer {
 
 body {
     margin-bottom: 60px;
-    background-image: url('/BackGround/Gif5.gif');
+    background-image: url('/BackGround/gif7.gif');
+    /*background-image: url('/BackGround/Gif5.gif');*/
     /*background-repeat: no-repeat;*/
-    background-size: 75%; /* Adjust the percentage to control the size */
+    background-size: 50%; /* Adjust the percentage to control the size */
     background-position: center center; /* Center the background horizontally and vertically */
 }
-
 
 
 .message-list {
