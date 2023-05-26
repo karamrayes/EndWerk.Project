@@ -1,10 +1,10 @@
 html {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 @media (min-width: 768px) {
   html {
-    font-size: 16px;
+    font-size: 19px;
   }
 }
 
@@ -24,12 +24,13 @@ footer {
 }
 
 body {
-    margin-bottom: 60px;    
-    background-image: url('/BackGround/animated-interactive-infographics-header-wide.gif'); 
-    background-repeat: no-repeat;
-    background-size: contain; 
-    background-position: center; 
+    margin-bottom: 60px;
+    background-image: url('/BackGround/Gif5.gif');
+    /*background-repeat: no-repeat;*/
+    background-size: 75%; /* Adjust the percentage to control the size */
+    background-position: center center; /* Center the background horizontally and vertically */
 }
+
 
 
 .message-list {
@@ -42,7 +43,7 @@ body {
 }
 
 .message-heading {
-    font-size: 20px;
+    font-size: 19px;
     /*color: #000000;*/
     margin-bottom: 10px;
     text-align: left;
@@ -50,13 +51,14 @@ body {
 
 .message-container {
     /*background-color: #ffffff;*/
-    border: 1px solid #258cfb;
+    border: 2px solid #258cfb;
     padding: 10px;
     max-width: 400px;
     height: 300px;
     overflow: auto;
     border-radius: 10px;
 }
+
 
 
 

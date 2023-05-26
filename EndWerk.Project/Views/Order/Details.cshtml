@@ -55,6 +55,34 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.UserId)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderDetail)
+        </dt>
+        <dd>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Product Id</th>
+                        <th>Product Price</th>
+                        <th>Product Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var orderDetail in Model.OrderDetail)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => orderDetail.Product.ProductName)</td>
+                            <td>@Html.DisplayFor(modelItem => orderDetail.Product.ProductId)</td>
+                            <td>@Html.DisplayFor(modelItem => orderDetail.UnitPrice)</td>
+                            <td>@Html.DisplayFor(modelItem => orderDetail.Quantity)</td>
+                            @*<td>@Html.DisplayFor(modelItem => orderDetail.Product.ProductCategory.ProductCategoryName)</td>*@
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </dd>
+
         @*<dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.OrderDetail.Product.ProductId)
         </dt>
