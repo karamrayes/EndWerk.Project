@@ -84,7 +84,7 @@
                         <thead>
                             <tr>
                                 <th>Product Name</th>
-                                <th>Product Id</th>
+                                @*<th>Product Id</th>*@
                                 <th>Product Price</th>
                                 <th>Product Quantity</th>
                             </tr>
@@ -94,7 +94,7 @@
                             {
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => orderDetail.Product.ProductName)</td>
-                                    <td>@Html.DisplayFor(modelItem => orderDetail.Product.ProductId)</td>
+                                    @*<td>@Html.DisplayFor(modelItem => orderDetail.Product.ProductId)</td>*@
                                     <td>@Html.DisplayFor(modelItem => orderDetail.UnitPrice)</td>
                                      <td>@Html.DisplayFor(modelItem => orderDetail.Quantity)</td>
                                     @*<td>@Html.DisplayFor(modelItem => orderDetail.Product.ProductCategory.ProductCategoryName)</td>*@
