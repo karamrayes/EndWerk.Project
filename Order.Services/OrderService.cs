@@ -113,5 +113,24 @@ namespace Order.Services
             }
 
         }
+
+        public decimal CalculateOrderAmount(List<OrderDetail> OrderDetailsList)
+        {
+            decimal totalAmount=0;
+
+            foreach (var item in OrderDetailsList)
+            {
+                item.UnitPrice = _procutService.GetProduct(item.ProductId).ProductPrice;
+
+                totalAmount += item.Quantity * item.UnitPrice;
+            }
+
+            return totalAmount;
+        }
+
+        public void UpdateReposistory()
+        {
+            _repository.SaveChanges();
+        }
     }
 }

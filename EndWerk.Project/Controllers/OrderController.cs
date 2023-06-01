@@ -30,12 +30,7 @@ namespace Order.Project.Web.Controllers
         [Authorize]
         public IActionResult Index()
         {
-
-            //var currentUserId = User.Identity.GetUserId();
-            //var currentUser = _userManager.GetUserAsync;
-
-            //var listoforderdetails = _OrderDetailsService.GetOrderDetails();
-
+            
             var list = _orderService.GetOrders();
 
             //var UserModel = list.Select(Order => new OrderModel
@@ -51,6 +46,7 @@ namespace Order.Project.Web.Controllers
             //    OrderDetails = Order.OrderDetails
             //    //Idmodel == user.Id
             //}).ToList();
+
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["Message"].ToString();
@@ -58,39 +54,7 @@ namespace Order.Project.Web.Controllers
 
             return View(list);
         }
-
-        [Authorize]
-        public IActionResult Index2()
-        {
-
-            //var currentUserId = User.Identity.GetUserId();
-            //var currentUser = _userManager.GetUserAsync;
-
-            //var listoforderdetails = _OrderDetailsService.GetOrderDetails();
-
-            var list = _orderService.GetOrders();
-
-            //var UserModel = list.Select(Order => new OrderModel
-            //{
-            //    OrderId = Order.OrderId,
-            //    OrderAmount = Order.OrderAmount,
-            //    OrderDate = Order.OrderDate,
-            //    ShipDate = Order.ShipDate,
-            //    Shipped = Order.Shipped,
-            //    PaymentRecevied = Order.PaymentRecevied,
-            //    UserId = Order.UserId,
-            //    User = Order.User,
-            //    OrderDetails = Order.OrderDetails
-            //    //Idmodel == user.Id
-            //}).ToList();
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.Message = TempData["Message"].ToString();
-            }
-
-            return View(list);
-        }
-
+        
         [Authorize]
         public IActionResult Details(int id)
         {
@@ -256,13 +220,15 @@ namespace Order.Project.Web.Controllers
             // Validate and process the order
 
             // Calculate the total amount
-            decimal totalAmount = 0;
+            //decimal totalAmount = 0;
             foreach (var item in model.OrderDetailsList)
             {
                 item.UnitPrice = _productService.GetProduct(item.ProductId).ProductPrice;
 
-                totalAmount += item.Quantity * item.UnitPrice;
+                //totalAmount += item.Quantity * item.UnitPrice;
             }
+
+            var totalAmount =_orderService.CalculateOrderAmount(model.OrderDetailsList);
             
 
             // Assign the total amount to the Order.Amount property

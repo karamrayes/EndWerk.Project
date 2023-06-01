@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Order.Object;
 using Order.Services;
 
@@ -9,9 +10,15 @@ namespace Order.Project.Web.Controllers
     {
         private OrderDetailsService _OrderDetailsService { get; set; }
 
-        public OrderDetailsController(OrderDetailsService orderDetailsService)
+        private ProductService _prouctService { get; set; }
+
+        private OrderService _orderService { get; set; }
+
+        public OrderDetailsController(OrderDetailsService orderDetailsService, ProductService prouctService, OrderService orderService)
         {
             _OrderDetailsService = orderDetailsService;
+            _prouctService = prouctService;
+            _orderService = orderService;
         }
 
         [Authorize]
@@ -36,6 +43,62 @@ namespace Order.Project.Web.Controllers
             TempData["message"] = "Object has been Created successfully.";
 
             return RedirectToAction("Index");
+        }
+
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var products = _prouctService.GetProducts().Select(p => new
+            {
+                Id = p.ProductId,
+                DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} -Name: {p.ProductName}"
+            });
+
+            ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
+
+            var result = _OrderDetailsService.GetOrderDetail(id);
+
+            return View(result);
+        }
+
+        [Authorize]
+        [HttpPost]        
+        public IActionResult Edit(int id, OrderDetail orderDetail)
+        {
+            var products = _prouctService.GetProducts().Select(p => new
+            {
+                Id = p.ProductId,
+                DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} -Name: {p.ProductName}"
+            });
+
+            ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
+
+            var orderdetailtoupdate = _OrderDetailsService.GetOrderDetail(id);
+
+            //update UntiPrice
+            orderdetailtoupdate.UnitPrice = _prouctService.GetProduct(orderdetailtoupdate.ProductId).ProductPrice;
+
+            TryUpdateModelAsync(orderdetailtoupdate);
+
+            _OrderDetailsService.UpdateOrCreateOrderDetails(orderdetailtoupdate);
+
+            var FilteredList = _OrderDetailsService.GetOrderDetails().Where(od => od.OrderId == orderdetailtoupdate.OrderId).ToList();
+
+            
+           
+            //updateOrder Amount
+            var ordertoupdate = _orderService.GetOrder(orderdetailtoupdate.OrderId);
+
+            ordertoupdate.OrderAmount = _orderService.CalculateOrderAmount(FilteredList);
+            
+            TryUpdateModelAsync(ordertoupdate);
+
+            _orderService.UpdateOrCreateOrder(ordertoupdate);
+
+            TempData["message"] = "Object has been updated successfully.";
+
+            return RedirectToAction("Index");
+            //return RedirectToAction("Details", new { id = orderdetailtoupdate.OrderDetailId });
         }
     }
 }

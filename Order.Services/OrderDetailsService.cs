@@ -26,6 +26,12 @@ namespace Order.Services
 
         }
 
+        public OrderDetail GetOrderDetail(int id)
+        {
+            return _repository.OrderDetails.FirstOrDefault(c => c.OrderDetailId == id);
+
+        }
+
         public OrderDetail UpdateOrCreateOrderDetails(OrderDetail orderdetails)
         {
 
