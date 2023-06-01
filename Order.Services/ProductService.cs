@@ -20,12 +20,16 @@ namespace Order.Services
 
         public List<Product> GetProducts()
         {
-            return _repository.Products.Include(ct => ct.ProductCategory).Include(sp => sp.Supplier).Include(od => od.OrderDetails).ToList();
+            
+            //return _repository.Products.Include(ct => ct.ProductCategory).Include(sp => sp.Supplier).Include(od => od.OrderDetails).ToList();
+            return _repository.Products.Include(ct => ct.ProductCategory).Include(sp => sp.Supplier).ToList();
         }
 
         public Product GetProduct(int id) 
         {
-            return _repository.Products.Include(ct => ct.ProductCategory).Include(sp => sp.Supplier).Include(od => od.OrderDetails).FirstOrDefault(p => p.ProductId == id);
+            //changed for api
+            //return _repository.Products.Include(ct => ct.ProductCategory).Include(sp => sp.Supplier).Include(od => od.OrderDetails).FirstOrDefault(p => p.ProductId == id);
+            return _repository.Products.Include(ct => ct.ProductCategory).Include(sp => sp.Supplier).FirstOrDefault(p => p.ProductId == id);
         }
 
         public Product CreateOrUpdateProduct(Product product) 
