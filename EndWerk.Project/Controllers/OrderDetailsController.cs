@@ -10,14 +10,14 @@ namespace Order.Project.Web.Controllers
     {
         private OrderDetailsService _OrderDetailsService { get; set; }
 
-        private ProductService _prouctService { get; set; }
+        private ProductService _productService { get; set; }
 
         private OrderService _orderService { get; set; }
 
         public OrderDetailsController(OrderDetailsService orderDetailsService, ProductService prouctService, OrderService orderService)
         {
             _OrderDetailsService = orderDetailsService;
-            _prouctService = prouctService;
+            _productService = prouctService;
             _orderService = orderService;
         }
 
@@ -48,11 +48,13 @@ namespace Order.Project.Web.Controllers
         [Authorize]
         public IActionResult Edit(int id)
         {
-            var products = _prouctService.GetProducts().Select(p => new
-            {
-                Id = p.ProductId,
-                DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} -Name: {p.ProductName}"
-            });
+            var products = _productService.GetProducts()
+                          .Where(p => p.UnitInStock > 0)
+                          .Select(p => new
+                          {
+                              Id = p.ProductId,
+                              DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}"
+                          });
 
             ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
 
@@ -65,18 +67,20 @@ namespace Order.Project.Web.Controllers
         [HttpPost]        
         public IActionResult Edit(int id, OrderDetail orderDetail)
         {
-            var products = _prouctService.GetProducts().Select(p => new
-            {
-                Id = p.ProductId,
-                DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} -Name: {p.ProductName}"
-            });
+            var products = _productService.GetProducts()
+                          .Where(p => p.UnitInStock > 0)
+                          .Select(p => new
+                          {
+                              Id = p.ProductId,
+                              DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}"
+                          });
 
             ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
 
             var orderdetailtoupdate = _OrderDetailsService.GetOrderDetail(id);
 
             //update UntiPrice
-            orderdetailtoupdate.UnitPrice = _prouctService.GetProduct(orderdetailtoupdate.ProductId).ProductPrice;
+            orderdetailtoupdate.UnitPrice = _productService.GetProduct(orderdetailtoupdate.ProductId).ProductPrice;
 
             TryUpdateModelAsync(orderdetailtoupdate);
 
@@ -99,6 +103,15 @@ namespace Order.Project.Web.Controllers
 
             return RedirectToAction("Index");
             //return RedirectToAction("Details", new { id = orderdetailtoupdate.OrderDetailId });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult GetAllOrderDetailsById(int id) 
+        {
+            var list = _OrderDetailsService.GetOrderDetails().Where(od => od.OrderId == id).ToList();
+
+            return View(list);
         }
     }
 }

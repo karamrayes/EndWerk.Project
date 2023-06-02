@@ -132,5 +132,10 @@ namespace Order.Services
         {
             _repository.SaveChanges();
         }
+
+        public void CheckUnitInStock() 
+        {
+
+        }
     }
 }

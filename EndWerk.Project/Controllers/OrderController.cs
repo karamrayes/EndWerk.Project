@@ -30,7 +30,7 @@ namespace Order.Project.Web.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            
+
             var list = _orderService.GetOrders();
 
             //var UserModel = list.Select(Order => new OrderModel
@@ -54,7 +54,7 @@ namespace Order.Project.Web.Controllers
 
             return View(list);
         }
-        
+
         [Authorize]
         public IActionResult Details(int id)
         {
@@ -190,13 +190,16 @@ namespace Order.Project.Web.Controllers
             model.OrderDetailsList = new List<OrderDetail>();
 
 
-            var products = _productService.GetProducts().Select(p => new
-            {
-                Id = p.ProductId,
-                DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} -Name: {p.ProductName}"
-            });
+            var products = _productService.GetProducts()
+                          .Where(p => p.UnitInStock > 0)
+                          .Select(p => new
+             {
+                           Id = p.ProductId,
+                           DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}"
+             });
 
             ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
+
 
             //ViewData["ProductId"] = new SelectList(_productService.GetProducts(), "ProductId", "ProductId");
 
@@ -209,11 +212,13 @@ namespace Order.Project.Web.Controllers
         {
             var currentUserId = _userManager.GetUserId(User);
 
-            var products = _productService.GetProducts().Select(p => new
-            {
-                Id = p.ProductId,
-                DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} -Name: {p.ProductName}"
-            });
+            var products = _productService.GetProducts()
+                          .Where(p => p.UnitInStock > 0)
+                          .Select(p => new
+                          {
+                              Id = p.ProductId,
+                              DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}"
+                          });
 
             ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
 
@@ -228,8 +233,8 @@ namespace Order.Project.Web.Controllers
                 //totalAmount += item.Quantity * item.UnitPrice;
             }
 
-            var totalAmount =_orderService.CalculateOrderAmount(model.OrderDetailsList);
-            
+            var totalAmount = _orderService.CalculateOrderAmount(model.OrderDetailsList);
+
 
             // Assign the total amount to the Order.Amount property
             model.Order.OrderAmount = totalAmount;

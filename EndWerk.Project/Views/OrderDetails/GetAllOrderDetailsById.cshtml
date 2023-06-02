@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Order.Object.OrderDetail>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "GetAllOrderDetailsById";
 }
 
-<h1>Index</h1>
+<h1>GetAllOrderDetailsById</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Product)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order.OrderId)
+                @Html.DisplayNameFor(model => model.Order)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.UnitPrice)
@@ -49,8 +49,8 @@
                 </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.OrderDetailId">Edit</a> |
-                @*<a asp-action="Details" asp-route-id="@item.OrderDetailId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OrderDetailId">Delete</a>*@
+                @*<a asp-action="Details" asp-route-id="@item.OrderDetailId">Details</a> |*@
+                @*<a asp-action="Delete" asp-route-id="@item.OrderDetailId">Delete</a>*@
             </td>
         </tr>
 }
