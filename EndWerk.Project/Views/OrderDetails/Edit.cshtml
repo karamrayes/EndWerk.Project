@@ -6,6 +6,11 @@
 
 <h1>Edit</h1>
 
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">@ViewBag.Message</div>
+}
+
 <h4>OrderDetail</h4>
 <hr />
 <div class="row">

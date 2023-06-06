@@ -48,12 +48,17 @@ namespace Order.Project.Web.Controllers
         [Authorize]
         public IActionResult Edit(int id)
         {
+            if (TempData.ContainsKey("Message"))
+            {
+                ViewBag.Message = TempData["Message"].ToString();
+            }
+
             var products = _productService.GetProducts()
-                          .Where(p => p.UnitInStock > 0)
+                          .Where(p => p.UnitInStock >= 0)
                           .Select(p => new
                           {
                               Id = p.ProductId,
-                              DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}"
+                              DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}  - UnitInStock: {p.UnitInStock}"
                           });
 
             ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
@@ -67,12 +72,13 @@ namespace Order.Project.Web.Controllers
         [HttpPost]        
         public IActionResult Edit(int id, OrderDetail orderDetail)
         {
+             
             var products = _productService.GetProducts()
-                          .Where(p => p.UnitInStock > 0)
+                          .Where(p => p.UnitInStock >= 0)
                           .Select(p => new
                           {
                               Id = p.ProductId,
-                              DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}"
+                              DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}  - UnitInStock: {p.UnitInStock}"
                           });
 
             ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
@@ -82,14 +88,23 @@ namespace Order.Project.Web.Controllers
             //update UntiPrice
             orderdetailtoupdate.UnitPrice = _productService.GetProduct(orderdetailtoupdate.ProductId).ProductPrice;
 
-            TryUpdateModelAsync(orderdetailtoupdate);
+            var CurrentOrderDetailQuantity = orderdetailtoupdate.Quantity;
 
-            _OrderDetailsService.UpdateOrCreateOrderDetails(orderdetailtoupdate);
+            TryUpdateModelAsync(orderdetailtoupdate);
 
             var FilteredList = _OrderDetailsService.GetOrderDetails().Where(od => od.OrderId == orderdetailtoupdate.OrderId).ToList();
 
-            
-           
+            //no Stock is false
+            if (_orderService.CheckUnitInStock(FilteredList) == false && orderdetailtoupdate.Quantity > CurrentOrderDetailQuantity)
+            {
+                TempData["Message"] = "Chosen Quantity is above UnitInStock";
+
+
+                return RedirectToAction("Edit" ,new {id = orderdetailtoupdate.OrderDetailId});
+
+            }
+
+                       
             //updateOrder Amount
             var ordertoupdate = _orderService.GetOrder(orderdetailtoupdate.OrderId);
 
@@ -97,18 +112,23 @@ namespace Order.Project.Web.Controllers
             
             TryUpdateModelAsync(ordertoupdate);
 
-            _orderService.UpdateOrCreateOrder(ordertoupdate);
+            _orderService.MakeOrder(ordertoupdate, FilteredList);
 
             TempData["message"] = "Object has been updated successfully.";
 
-            return RedirectToAction("Index");
-            //return RedirectToAction("Details", new { id = orderdetailtoupdate.OrderDetailId });
+            return RedirectToAction("GetAllOrderDetailsById", new { id = orderdetailtoupdate.OrderId });
+            
         }
 
         [Authorize]
         [HttpGet]
         public IActionResult GetAllOrderDetailsById(int id) 
         {
+            if (TempData.ContainsKey("Message"))
+            {
+                ViewBag.Message = TempData["Message"].ToString();
+            }
+
             var list = _OrderDetailsService.GetOrderDetails().Where(od => od.OrderId == id).ToList();
 
             return View(list);

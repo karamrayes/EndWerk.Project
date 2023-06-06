@@ -4,11 +4,16 @@
     ViewData["Title"] = "GetAllOrderDetailsById";
 }
 
-<h1>GetAllOrderDetailsById</h1>
+<h1>AllOrderDetails</h1>
 
-<p>
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">@ViewBag.Message</div>
+}
+
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
+</p>*@
 <table class="table">
     <thead>
         <tr>
@@ -48,7 +53,7 @@
                     @Html.DisplayFor(modelItem => item.Order.OrderAmount)
                 </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.OrderDetailId">Edit</a> |
+                @*<a asp-action="Edit" asp-route-id="@item.OrderDetailId">Edit</a> |*@
                 @*<a asp-action="Details" asp-route-id="@item.OrderDetailId">Details</a> |*@
                 @*<a asp-action="Delete" asp-route-id="@item.OrderDetailId">Delete</a>*@
             </td>

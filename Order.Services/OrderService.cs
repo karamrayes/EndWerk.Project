@@ -18,14 +18,14 @@ namespace Order.Services
 
         private Repository _repository;
         private OrderDetailsService _orderDetailsService;
-        private ProductService _procutService;
+        private ProductService _productService;
 
 
         public OrderService(Repository repository, OrderDetailsService orderDetailsService, ProductService procutService)
         {
             _repository = repository;
             _orderDetailsService = orderDetailsService;
-            _procutService = procutService;
+            _productService = procutService;
         }
 
         public List<Order.Object.Order> GetOrders() 
@@ -99,16 +99,14 @@ namespace Order.Services
 
             if (Result != null)
             {
-                _procutService.UpdateProductUnitInstock(OrderDetailsList);
+                _productService.UpdateProductUnitInstock(OrderDetailsList);
 
                 foreach (var orderDetails in OrderDetailsList)
                 {
                     orderDetails.OrderId = NewOrder.OrderId;
                     _orderDetailsService.UpdateOrCreateOrderDetails(orderDetails);
                 }
-                //_repository.OrderDetails.AddRange(OrderDetailsList);
-
-                //_repository.SaveChanges();
+                
 
             }
 
@@ -120,7 +118,7 @@ namespace Order.Services
 
             foreach (var item in OrderDetailsList)
             {
-                item.UnitPrice = _procutService.GetProduct(item.ProductId).ProductPrice;
+                item.UnitPrice = _productService.GetProduct(item.ProductId).ProductPrice;
 
                 totalAmount += item.Quantity * item.UnitPrice;
             }
@@ -133,8 +131,18 @@ namespace Order.Services
             _repository.SaveChanges();
         }
 
-        public void CheckUnitInStock() 
+        public bool CheckUnitInStock(List<OrderDetail> orderDetailsList) 
         {
+            foreach (var item in orderDetailsList)
+            {
+                if (item.Quantity > _productService.GetProduct(item.ProductId).UnitInStock)
+                {
+
+                    return false;
+                }
+            }
+
+            return true;
 
         }
     }

@@ -3,6 +3,10 @@
 <!-- Existing code -->
 
 <h4>OrderDetails List</h4>
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">@ViewBag.Message</div>
+}
 <hr />
 <div class="row">
     <div class="col-md-4">

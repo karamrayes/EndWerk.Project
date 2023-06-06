@@ -168,7 +168,14 @@ namespace Order.Project.Web.Controllers
         [HttpPost]
         public IActionResult Delete(int id, Order.Object.Order order)
         {
+            var ordertodelete = _orderService.GetOrder(id);
+
+            _productService.UpdateProductUnitInstock(ordertodelete.OrderDetail ,true);
+
             var Result = _orderService.DeleteOrder(id);
+            
+            
+
             if (Result)
             {
                 TempData["Message"] = "Object has been Deleted successfully";
@@ -186,6 +193,11 @@ namespace Order.Project.Web.Controllers
         [Authorize]
         public IActionResult CreateOrder()
         {
+            if (TempData.ContainsKey("Message"))
+            {
+                ViewBag.Message = TempData["Message"].ToString();
+            }
+
             OrderDetailsModel model = new OrderDetailsModel();
             model.OrderDetailsList = new List<OrderDetail>();
 
@@ -195,14 +207,13 @@ namespace Order.Project.Web.Controllers
                           .Select(p => new
              {
                            Id = p.ProductId,
-                           DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}"
+                           DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName} - UnitInStock: {p.UnitInStock}"
              });
 
             ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
 
 
-            //ViewData["ProductId"] = new SelectList(_productService.GetProducts(), "ProductId", "ProductId");
-
+            
             return View(model);
         }
 
@@ -217,22 +228,19 @@ namespace Order.Project.Web.Controllers
                           .Select(p => new
                           {
                               Id = p.ProductId,
-                              DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}"
+                              DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName} - UnitInStock: {p.UnitInStock}"
                           });
 
             ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
 
-            // Validate and process the order
-
-            // Calculate the total amount
-            //decimal totalAmount = 0;
+            // Validate and process the order         
             foreach (var item in model.OrderDetailsList)
             {
                 item.UnitPrice = _productService.GetProduct(item.ProductId).ProductPrice;
-
-                //totalAmount += item.Quantity * item.UnitPrice;
+                
             }
 
+            // Calculate the total amount
             var totalAmount = _orderService.CalculateOrderAmount(model.OrderDetailsList);
 
 
@@ -242,6 +250,16 @@ namespace Order.Project.Web.Controllers
             model.Order.UserId = currentUserId;
             model.Order.Shipped = false;
 
+            //CheckUnitInStock , no Stock is false
+            if (_orderService.CheckUnitInStock(model.OrderDetailsList) == false)
+            {
+                TempData["message"] = "Chosen Quantity is above UnitInStock";
+
+
+                return RedirectToAction("CreateOrder");
+
+            }
+            
             _orderService.MakeOrder(model.Order, model.OrderDetailsList);
 
             return RedirectToAction("Details", new { id = model.Order.OrderId });

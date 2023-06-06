@@ -90,5 +90,27 @@ namespace Order.Services
            
         }
 
+        public void UpdateProductUnitInstock(OrderDetail OrderDetail)
+        {
+
+           
+             GetProduct(OrderDetail.ProductId).UnitInStock -= OrderDetail.Quantity;
+            
+            _repository.SaveChanges();
+
+        }
+
+        public void UpdateProductUnitInstock(List<OrderDetail> OrderDetailsList ,bool delete)
+        {
+
+            foreach (var item in OrderDetailsList)
+            {
+                GetProduct(item.ProductId).UnitInStock += item.Quantity;
+            }
+
+            _repository.SaveChanges();
+
+        }
+
     }
 }
