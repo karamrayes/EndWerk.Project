@@ -207,13 +207,15 @@ namespace Order.Project.Web.Controllers
                           .Select(p => new
              {
                            Id = p.ProductId,
+                           price = p.ProductPrice,
                            DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName} - UnitInStock: {p.UnitInStock}"
-             });
+             });;
 
             ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
+            ViewBag.ProductPrices = new SelectList(products, "Id", "price");
 
 
-            
+
             return View(model);
         }
 
@@ -228,6 +230,7 @@ namespace Order.Project.Web.Controllers
                           .Select(p => new
                           {
                               Id = p.ProductId,
+                              price = p.ProductPrice,
                               DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName} - UnitInStock: {p.UnitInStock}"
                           });
 

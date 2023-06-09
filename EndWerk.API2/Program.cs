@@ -14,6 +14,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<Repository>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("OrderDB")));
 
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<OrderDetailsService>();
+builder.Services.AddScoped<OrderService>();
+
 
 var app = builder.Build();
 

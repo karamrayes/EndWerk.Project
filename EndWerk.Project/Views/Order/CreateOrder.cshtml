@@ -38,24 +38,24 @@
                 {
                     <div class="form-group">
                         <label asp-for="OrderDetailsList[i].ProductId" class="control-label"></label>
-                        <select asp-for="OrderDetailsList[i].ProductId" class="form-control" asp-items="ViewBag.ProductIdList"></select>
+                            <select asp-for="OrderDetailsList[i].ProductId" class="form-control productIds" asp-items="ViewBag.ProductIdList"></select>
                     </div>
                     <div class="form-group">
                         <label asp-for="OrderDetailsList[i].Quantity" class="control-label"></label>
-                        <input asp-for="OrderDetailsList[i].Quantity" class="form-control" />
+                            <input asp-for="OrderDetailsList[i].Quantity" class="form-control quantities" />
                         <span asp-validation-for="OrderDetailsList[i].Quantity" class="text-danger"></span>
                     </div>
                 }
             </div>
 
+                <div class="form-group" id="totalAmount"></div>
             <div class="form-group">
                 <button id="addOrderDetailsButton" type="button" class="btn btn-primary">Add Order Details</button>
-            </div>
-
+            </div>                
               <div class="form-group">
                 <input type="submit" @*value="Create"*@ class="btn btn-primary" />
             </div>
-
+            
         </form>
     </div>
 </div>
@@ -73,7 +73,7 @@
             var orderDetailsHtml = `
                         <div class="form-group">
                             <label class="control-label">Product ID:</label>
-                            <select class="form-control" name="${prefix}.ProductId">
+                                    <select class="form-control productIds" name="${prefix}.ProductId" onchange="calculateTotal()">
                                 <option value="">-- Select Product --</option>
         @foreach (var product in ViewBag.ProductIdList)
         {
@@ -83,12 +83,51 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Quantity:</label>
-                            <input class="form-control" type="number" name="${prefix}.Quantity" />
+                                    <input class="form-control quantities" type="number" name="${prefix}.Quantity" onchange="calculateTotal()"/>
                             <span class="text-danger" asp-validation-for="${prefix}.Quantity"></span>
                         </div>
                     `;
 
             container.insertAdjacentHTML('beforeend', orderDetailsHtml);
+            calculateTotal();
         });
+
+
+        var productIdList = @Html.Raw(Json.Serialize(ViewBag.ProductIdList));
+        var productIdListPrice = @Html.Raw(Json.Serialize(ViewBag.ProductPrices));
+
+        function calculateTotal() {
+            console.log("prices", productIdListPrice);
+            var total = 0;
+            var orderDetailsList = document.getElementsByClassName("quantities");
+            console.log(orderDetailsList);
+            for (var i = 0; i < orderDetailsList.length; i++) {
+                var quantity = parseFloat(orderDetailsList[i].value);
+                var productId = document.getElementsByName("OrderDetailsList[" + i + "].ProductId")[0].value;
+                console.log(quantity);
+                console.log(productId);
+                if (productId && quantity) {
+                    var price = getProductPrice(productId); // Replace with your logic to get the price of the product
+
+                    if (!isNaN(price)) {
+                        total += price * quantity;
+                    }
+                }
+            }
+
+            document.getElementById("totalAmount").innerText = "Total Amount: " + total.toFixed(2);
+        }
+
+        function getProductPrice(productId) {
+            // Replace this function with your logic to get the price of the product based on the selected productId
+            // You can use the productIdList variable to fetch the price from the server or calculate it locally
+            // Return the price as a float value
+
+            var productprice = productIdListPrice.find((p) => p.value == productId);
+            return +productprice.text;
+           
+            
+        }
+
     </script>
 }

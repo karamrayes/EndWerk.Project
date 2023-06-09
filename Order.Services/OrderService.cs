@@ -126,6 +126,19 @@ namespace Order.Services
             return totalAmount;
         }
 
+        public decimal CalculateOrderAmount(OrderDetail OrderDetails)
+        {
+            decimal totalAmount = 0;
+
+           
+                var UnitPrice = _productService.GetProduct(OrderDetails.ProductId).ProductPrice;
+
+                totalAmount += OrderDetails.Quantity * OrderDetails.UnitPrice;
+            
+
+            return totalAmount;
+        }
+
         public void UpdateReposistory()
         {
             _repository.SaveChanges();
