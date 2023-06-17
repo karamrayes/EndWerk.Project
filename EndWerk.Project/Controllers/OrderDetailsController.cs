@@ -30,99 +30,8 @@ namespace Order.Project.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [Authorize]
-        [HttpPost]
-        public IActionResult Create(OrderDetail user)
-        {
-            var UserToCreate = _OrderDetailsService.UpdateOrCreateOrderDetails(user);
-            TempData["message"] = "Object has been Created successfully.";
-
-            return RedirectToAction("Index");
-        }
-
-        [Authorize]
-        public IActionResult Edit(int id)
-        {
-            if (TempData.ContainsKey("Message"))
-            {
-                ViewBag.Message = TempData["Message"].ToString();
-            }
-
-            var products = _productService.GetProducts()
-                          .Where(p => p.UnitInStock >= 0)
-                          .Select(p => new
-                          {
-                              Id = p.ProductId,
-                              DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}  - UnitInStock: {p.UnitInStock}"
-                          });
-
-            ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
-
-            var result = _OrderDetailsService.GetOrderDetail(id);
-
-            return View(result);
-        }
-
-        [Authorize]
-        [HttpPost]        
-        public IActionResult Edit(int id, OrderDetail orderDetail)
-        {
-             
-            var products = _productService.GetProducts()
-                          .Where(p => p.UnitInStock >= 0)
-                          .Select(p => new
-                          {
-                              Id = p.ProductId,
-                              DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}  - UnitInStock: {p.UnitInStock}"
-                          });
-
-            ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
-
-            var orderdetailtoupdate = _OrderDetailsService.GetOrderDetail(id);
-
-            //update UntiPrice
-            orderdetailtoupdate.UnitPrice = _productService.GetProduct(orderdetailtoupdate.ProductId).ProductPrice;
-
-            var CurrentOrderDetailQuantity = orderdetailtoupdate.Quantity;
-
-            TryUpdateModelAsync(orderdetailtoupdate);
-
-            var FilteredList = _OrderDetailsService.GetOrderDetails().Where(od => od.OrderId == orderdetailtoupdate.OrderId).ToList();
-
-            //no Stock is false
-            if (_orderService.CheckUnitInStock(FilteredList) == false && orderdetailtoupdate.Quantity > CurrentOrderDetailQuantity)
-            {
-                TempData["Message"] = "Chosen Quantity is above UnitInStock";
-
-
-                return RedirectToAction("Edit" ,new {id = orderdetailtoupdate.OrderDetailId});
-
-            }
-
-                       
-            //updateOrder Amount
-            var ordertoupdate = _orderService.GetOrder(orderdetailtoupdate.OrderId);
-
-            ordertoupdate.OrderAmount = _orderService.CalculateOrderAmount(FilteredList);
-            
-            TryUpdateModelAsync(ordertoupdate);
-
-            _orderService.MakeOrder(ordertoupdate, FilteredList);
-
-            TempData["message"] = "Object has been updated successfully.";
-
-            return RedirectToAction("GetAllOrderDetailsById", new { id = orderdetailtoupdate.OrderId });
-            
-        }
-
-        [Authorize]
         [HttpGet]
-        public IActionResult GetAllOrderDetailsById(int id) 
+        public IActionResult GetAllOrderDetailsById(int id)
         {
             if (TempData.ContainsKey("Message"))
             {
@@ -134,4 +43,99 @@ namespace Order.Project.Web.Controllers
             return View(list);
         }
     }
+
+    //to be used for later
+
+    //[Authorize]
+    //public IActionResult Create()
+    //{
+    //    return View();
+    //}
+
+    //[Authorize]
+    //[HttpPost]
+    //public IActionResult Create(OrderDetail user)
+    //{
+    //    var UserToCreate = _OrderDetailsService.UpdateOrCreateOrderDetails(user);
+    //    TempData["message"] = "Object has been Created successfully.";
+
+    //    return RedirectToAction("Index");
+    //}
+
+    //[Authorize]
+    //public IActionResult Edit(int id)
+    //{
+    //    if (TempData.ContainsKey("Message"))
+    //    {
+    //        ViewBag.Message = TempData["Message"].ToString();
+    //    }
+
+    //    var products = _productService.GetProducts()
+    //                  .Where(p => p.UnitInStock >= 0)
+    //                  .Select(p => new
+    //                  {
+    //                      Id = p.ProductId,
+    //                      DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}  - UnitInStock: {p.UnitInStock}"
+    //                  });
+
+    //    ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
+
+    //    var result = _OrderDetailsService.GetOrderDetail(id);
+
+    //    return View(result);
+    //}
+
+    //[Authorize]
+    //[HttpPost]        
+    //public IActionResult Edit(int id, OrderDetail orderDetail)
+    //{
+
+    //    var products = _productService.GetProducts()
+    //                  .Where(p => p.UnitInStock >= 0)
+    //                  .Select(p => new
+    //                  {
+    //                      Id = p.ProductId,
+    //                      DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName}  - UnitInStock: {p.UnitInStock}"
+    //                  });
+
+    //    ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
+
+    //    var orderdetailtoupdate = _OrderDetailsService.GetOrderDetail(id);
+
+    //    //update UntiPrice
+    //    orderdetailtoupdate.UnitPrice = _productService.GetProduct(orderdetailtoupdate.ProductId).ProductPrice;
+
+    //    var CurrentOrderDetailQuantity = orderdetailtoupdate.Quantity;
+
+    //    TryUpdateModelAsync(orderdetailtoupdate);
+
+    //    var FilteredList = _OrderDetailsService.GetOrderDetails().Where(od => od.OrderId == orderdetailtoupdate.OrderId).ToList();
+
+    //    //no Stock is false
+    //    if (_orderService.CheckUnitInStock(FilteredList) == false && orderdetailtoupdate.Quantity > CurrentOrderDetailQuantity)
+    //    {
+    //        TempData["Message"] = "Chosen Quantity is above UnitInStock";
+
+
+    //        return RedirectToAction("Edit" ,new {id = orderdetailtoupdate.OrderDetailId});
+
+    //    }
+
+
+    //    //updateOrder Amount
+    //    var ordertoupdate = _orderService.GetOrder(orderdetailtoupdate.OrderId);
+
+    //    ordertoupdate.OrderAmount = _orderService.CalculateOrderAmount(FilteredList);
+
+    //    TryUpdateModelAsync(ordertoupdate);
+
+    //    _orderService.MakeOrder(ordertoupdate, FilteredList);
+
+    //    TempData["message"] = "Object has been updated successfully.";
+
+    //    return RedirectToAction("GetAllOrderDetailsById", new { id = orderdetailtoupdate.OrderId });
+
+    //}
+
+
 }

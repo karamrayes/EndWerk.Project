@@ -8,7 +8,6 @@ using Order.Services;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<OrderService>();
-builder.Services.AddTransient<UserService>();
 builder.Services.AddTransient<ProductService>();
 builder.Services.AddTransient<SupplierService>();
 builder.Services.AddTransient<ProductCategoryService>();

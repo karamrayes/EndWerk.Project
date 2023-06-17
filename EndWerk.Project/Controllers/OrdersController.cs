@@ -155,14 +155,14 @@
 //            {
 //                _context.Order.Remove(order);
 //            }
-            
+
 //            await _context.SaveChangesAsync();
 //            return RedirectToAction(nameof(Index));
 //        }
 
 //        private bool OrderExists(int id)
 //        {
-//          return (_context.Order?.Any(e => e.OrderId == id)).GetValueOrDefault();
+//            return (_context.Order?.Any(e => e.OrderId == id)).GetValueOrDefault();
 //        }
 //    }
 //}

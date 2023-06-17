@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Orders</h1>
 @if (ViewBag.Message != null)
 {
     <div class="alert alert-success">@ViewBag.Message</div>
@@ -33,9 +33,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.PaymentRecevied)
             </th>
-           @* <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>*@
+          
             <th>
                 @Html.DisplayNameFor(model => model.User.Name)
             </th>

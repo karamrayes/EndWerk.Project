@@ -24,10 +24,7 @@ namespace EndWerk.Project.Controllers
             
                 // Retrieve the list of messages from your data source
                 List<Order.Object.Message> messages = _messageServices.GetMessages();
-
-                // Pass the list of messages to the view using ViewBag or ViewData
-                //ViewBag.Messages = messages;
-            
+                         
             return View(messages);
         }
 

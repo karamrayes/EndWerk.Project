@@ -49,8 +49,8 @@ namespace Order.Project.Web.Controllers
         [Authorize]
         public IActionResult Edit(int id) 
         {
-            ViewData["supplierId"] = new SelectList(_SupplierService.GetSuppliers(), "SupplierId", "SupplierId");
-            ViewData["ProductCategoryId"] = new SelectList(_ProductCategoryService.GetProductCatagoryList(), "ProductCategoryId", "ProductCategoryId");
+            ViewData["supplierId"] = new SelectList(_SupplierService.GetSuppliers(), "SupplierId", "SupplierName");
+            ViewData["ProductCategoryId"] = new SelectList(_ProductCategoryService.GetProductCatagoryList(), "ProductCategoryId", "ProductCategoryName");
 
             var product = _productService.GetProduct(id);
             
@@ -66,10 +66,7 @@ namespace Order.Project.Web.Controllers
         [HttpPost]
         public IActionResult Edit(int id ,Product product)
         {
-
-            ViewData["supplierId"] = new SelectList(_SupplierService.GetSuppliers(), "SupplierId", "SupplierId", product.supplierId);
-            ViewData["ProductCategoryId"] = new SelectList(_ProductCategoryService.GetProductCatagoryList(), "ProductCategoryId", "ProductCategoryId", product.ProductCategory);
-
+           
             var ProductToEdit = _productService.GetProduct(id);
             TryUpdateModelAsync(ProductToEdit);
             var Result = _productService.CreateOrUpdateProduct(ProductToEdit);
@@ -90,9 +87,9 @@ namespace Order.Project.Web.Controllers
         [Authorize]
         public IActionResult Create() 
         {
-            //var x = _SupplierService.GetSuppliers();
-            ViewData["supplierId"] = new SelectList(_SupplierService.GetSuppliers(), "SupplierId", "SupplierId");
-            ViewData["ProductCategoryId"] = new SelectList(_ProductCategoryService.GetProductCatagoryList(), "ProductCategoryId", "ProductCategoryId");
+            
+            ViewData["supplierId"] = new SelectList(_SupplierService.GetSuppliers(), "SupplierId", "SupplierName");
+            ViewData["ProductCategoryId"] = new SelectList(_ProductCategoryService.GetProductCatagoryList(), "ProductCategoryId", "ProductCategoryName");
             
             if (TempData.ContainsKey("Message"))
             {
@@ -106,9 +103,7 @@ namespace Order.Project.Web.Controllers
         public IActionResult Create(Product product)
         {
             
-            ViewData["supplierId"] = new SelectList(_SupplierService.GetSuppliers(), "SupplierId", "Id" ,product.supplierId);
-            ViewData["ProductCategoryId"] = new SelectList(_ProductCategoryService.GetProductCatagoryList(), "ProductCategoryId", "ProductCategoryId",product.ProductCategory);
-
+          
             var Result =_productService.CreateOrUpdateProduct(product);
             if (Result != null)
             {

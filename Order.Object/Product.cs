@@ -38,9 +38,7 @@ namespace Order.Object
         [Column("ProductCategoryId")]
         public int ProductCategoryId { get; set; }
 
-        public ProductCategory ProductCategory { get; set; }
-
-        //public List<OrderDetail> OrderDetails { get; set; }
+        public ProductCategory ProductCategory { get; set; }        
 
     }
 }

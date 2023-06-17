@@ -25,8 +25,7 @@ namespace Order.Services
         }
 
         public ProductCategory GetProductCatagory(int id)
-        {
-            //return _repository.Order.FirstOrDefault(o => o.OrderId == id);
+        {           
             return _repository.ProductCategories.FirstOrDefault(o => o.ProductCategoryId == id);
         }
 

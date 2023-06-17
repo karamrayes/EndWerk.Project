@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Products</h1>
 @if (ViewBag.Message != null)
 {
     <div class="alert alert-success">@ViewBag.Message</div>
@@ -52,7 +52,7 @@
                 @Html.DisplayFor(modelItem => item.UnitInStock)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Supplier.SupplierAdress)
+                @Html.DisplayFor(modelItem => item.Supplier.SupplierName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductCategory.ProductCategoryDescription)

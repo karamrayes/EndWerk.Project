@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Order.Object
 {
     [Table("OrderDetail")]
-    //[PrimaryKey(nameof(ProductId), nameof(OrderId))]
+    //[PrimaryKey(nameof(ProductId), nameof(OrderId))] another type of key
     public class OrderDetail
     {
         [Key]

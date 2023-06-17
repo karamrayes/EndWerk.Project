@@ -29,16 +29,15 @@ namespace Order.Services
         }
 
         public List<Order.Object.Order> GetOrders() 
-        {
-            //return _repository.Order.ToList();
+        {          
             return _repository.Orders.Include(u => u.User).Include(o => o.OrderDetail).ThenInclude(od => od.Product).ThenInclude(p => p.ProductCategory)
                          .ToList();
 
         }
 
         public Order.Object.Order GetOrder(int id)
-        {
-            //return _repository.Order.FirstOrDefault(o => o.OrderId == id);
+        { 
+            
             return _repository.Orders.Include(u => u.User).Include(o => o.OrderDetail)
                          .ThenInclude(od => od.Product).FirstOrDefault(o => o.OrderId == id) ??new Object.Order();
                         
@@ -89,6 +88,7 @@ namespace Order.Services
             }
         }
 
+        //from the controller you get a order and list of orderdetails , first we make order then we use that order id to make the orderdetails
         public void MakeOrder(Order.Object.Order NewOrder, List<OrderDetail> OrderDetailsList)
         {
             
@@ -96,9 +96,9 @@ namespace Order.Services
 
             
             
-
             if (Result != null)
             {
+                //update the property unti in stock for the bought items
                 _productService.UpdateProductUnitInstock(OrderDetailsList);
 
                 foreach (var orderDetails in OrderDetailsList)

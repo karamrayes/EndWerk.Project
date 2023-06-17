@@ -20,8 +20,7 @@ namespace Order.Services
 
         public List<Product> GetProducts()
         {
-            
-            //return _repository.Products.Include(ct => ct.ProductCategory).Include(sp => sp.Supplier).Include(od => od.OrderDetails).ToList();
+                      
             return _repository.Products.Include(ct => ct.ProductCategory).Include(sp => sp.Supplier).ToList();
         }
 
@@ -90,21 +89,24 @@ namespace Order.Services
            
         }
 
-        public void UpdateProductUnitInstock(OrderDetail OrderDetail)
-        {
+        //to be used for later up dates
+        //public void UpdateProductUnitInstock(OrderDetail OrderDetail)
+        //{
 
-           
-             GetProduct(OrderDetail.ProductId).UnitInStock -= OrderDetail.Quantity;
-            
-            _repository.SaveChanges();
 
-        }
+        //    GetProduct(OrderDetail.ProductId).UnitInStock -= OrderDetail.Quantity;
 
+        //    _repository.SaveChanges();
+
+        //}
+
+        //for the delete method in controller
         public void UpdateProductUnitInstock(List<OrderDetail> OrderDetailsList ,bool delete)
         {
 
             foreach (var item in OrderDetailsList)
             {
+                //add the number of products in the Canceled order to the unitinstock
                 GetProduct(item.ProductId).UnitInStock += item.Quantity;
             }
 

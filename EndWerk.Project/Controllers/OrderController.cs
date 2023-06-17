@@ -33,20 +33,7 @@ namespace Order.Project.Web.Controllers
 
             var list = _orderService.GetOrders();
 
-            //var UserModel = list.Select(Order => new OrderModel
-            //{
-            //    OrderId = Order.OrderId,
-            //    OrderAmount = Order.OrderAmount,
-            //    OrderDate = Order.OrderDate,
-            //    ShipDate = Order.ShipDate,
-            //    Shipped = Order.Shipped,
-            //    PaymentRecevied = Order.PaymentRecevied,
-            //    UserId = Order.UserId,
-            //    User = Order.User,
-            //    OrderDetails = Order.OrderDetails
-            //    //Idmodel == user.Id
-            //}).ToList();
-
+            
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["Message"].ToString();
@@ -105,8 +92,7 @@ namespace Order.Project.Web.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            //var currentUserId = User.Identity.GetUserId();
-            //var currentUser = _userManager.GetUserAsync;
+            
             var currentUserId = _userManager.GetUserId(User);
             if (currentUserId != null)
             {
@@ -124,36 +110,7 @@ namespace Order.Project.Web.Controllers
 
             return View();
         }
-
-        [Authorize]
-        [HttpPost]
-        public IActionResult Create(Order.Object.Order order)
-        {
-            //var currentUserId = User.Identity.GetUserId();
-            var currentUserId = _userManager.GetUserId(User);
-            if (currentUserId != null)
-            {
-                ViewData["UserId"] = currentUserId;
-            }
-            else
-            {
-                ViewData["UserId"] = "";
-            }
-
-            var Result = _orderService.UpdateOrCreateOrder(order);
-            if (Result != null)
-            {
-                TempData["message"] = "Object has been Created successfully.";
-                return RedirectToAction("Details", new { id = Result.OrderId });
-            }
-            else
-            {
-                TempData["message"] = "Error Couldnt Create";
-                return RedirectToAction("Create");
-            }
-
-        }
-
+        
 
         [Authorize]
         public IActionResult Delete(int id)
@@ -193,6 +150,8 @@ namespace Order.Project.Web.Controllers
         [Authorize]
         public IActionResult CreateOrder()
         {
+            var currentUserId = _userManager.GetUserId(User);
+
             if (TempData.ContainsKey("Message"))
             {
                 ViewBag.Message = TempData["Message"].ToString();
@@ -212,8 +171,12 @@ namespace Order.Project.Web.Controllers
              });;
 
             ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
+
             ViewBag.ProductPrices = new SelectList(products, "Id", "price");
 
+            ViewBag.UserId = currentUserId;
+
+            ViewBag.UserName = _userManager.GetUserName(User);
 
 
             return View(model);
@@ -221,24 +184,14 @@ namespace Order.Project.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult CreateOrder(OrderDetailsModel model, int id, string submitButton)
+        public IActionResult CreateOrder(OrderDetailsModel model)
         {
-            var currentUserId = _userManager.GetUserId(User);
-
-            var products = _productService.GetProducts()
-                          .Where(p => p.UnitInStock > 0)
-                          .Select(p => new
-                          {
-                              Id = p.ProductId,
-                              price = p.ProductPrice,
-                              DisplayText = $"ID: {p.ProductId} - Price: {p.ProductPrice} - Name: {p.ProductName} - UnitInStock: {p.UnitInStock}"
-                          });
-
-            ViewBag.ProductIdList = new SelectList(products, "Id", "DisplayText");
-
+           
+           
             // Validate and process the order         
             foreach (var item in model.OrderDetailsList)
             {
+                //get unit price 
                 item.UnitPrice = _productService.GetProduct(item.ProductId).ProductPrice;
                 
             }
@@ -249,10 +202,8 @@ namespace Order.Project.Web.Controllers
 
             // Assign the total amount to the Order.Amount property
             model.Order.OrderAmount = totalAmount;
-            model.Order.OrderDate = DateTime.Now;
-            model.Order.UserId = currentUserId;
-            model.Order.Shipped = false;
-
+            
+                        
             //CheckUnitInStock , no Stock is false
             if (_orderService.CheckUnitInStock(model.OrderDetailsList) == false)
             {

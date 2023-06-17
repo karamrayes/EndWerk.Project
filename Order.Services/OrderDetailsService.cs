@@ -41,8 +41,7 @@ namespace Order.Services
                 
                 if (orderdetails.OrderDetailId == 0)
                 {
-                    // Insert new OrderDetails record
-                    //_repository.OrderDetails.Add(orderdetails);
+                    // Insert new OrderDetails record                   
                     _repository.OrderDetails.Add(orderdetails);
                 }
                 else

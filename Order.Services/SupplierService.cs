@@ -24,8 +24,7 @@ namespace Order.Services
         }
 
         public Supplier GetSupplier(int id)
-        {
-            //return _repository.Order.FirstOrDefault(o => o.OrderId == id);
+        {            
             return _repository.Suppliers.FirstOrDefault(o => o.SupplierId == id);
         }
 
